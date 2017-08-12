@@ -10,7 +10,6 @@ Note that there is a natural order. Elements are removed in the reverse order of
 DO NOT use an array and the native push/pop method in your implementation. That's too easy, yeah? =P
 Use an object as the underlying data structure.
 
-
 *** Operations:
 
 myStack.push(value)
@@ -51,26 +50,78 @@ What's the time complexity?
  */
 
 function Stack(capacity) {
-  // implement me...
+  this._storage = {};
+  this._count = 0;
 }
 
 Stack.prototype.push = function(value) {
-  // implement me...
+  this._storage[this._count++] = value;
+  return this._count;
 };
+
+// const myStack = new Stack();
+
+// myStack.push('test 1');
+
+// myStack.push('test 2');
+
+// console.log(myStack);
 // Time complexity:
 
 Stack.prototype.pop = function() {
   // implement me...
+  // i want to get the _count and minus 1 to get the last object key. 
+  // once i have that i'll have to remove it
+  let determineKeyToDelete = this._count - 1;
+  const value = this._storage[determineKeyToDelete];
+  delete this._storage[determineKeyToDelete];
+  this._count = this._count - 1;
+  console.log('value deleted: ' + value)
+  console.log('this._storage: ' + JSON.stringify(this._storage, null, 2))
+  return value;
 };
+
+// const myStack = new Stack();
+
+// myStack.push('test 1');
+// console.log(myStack)
+
+// myStack.pop();
+// console.log(myStack)
+
 // Time complexity:
 
 Stack.prototype.peek = function() {
   // implement me...
+  // what is the last value added to the stack?
+  let determineKeyToView = this._count - 1;
+  const value = this._storage[determineKeyToView];
+  return value;
 };
+
+const myStack = new Stack();
+
+myStack.push('test 1');
+console.log(myStack.peek())
 // Time complexity:
 
 Stack.prototype.count = function() {
   // implement me...
+  const value = this._count;
+  return value;
+};
+// Time complexity:
+
+Stack.prototype.min = function() {
+  // implement me...
+  // I'd test if there is an object key equal to zero. If so I'd return 0. I think I misunderstand the assignment.
+  // I may be able to use object keys via 'this'
+  const storageKeys = Object.keys(this._storage);
+  const smallestIndexValue = Math.min(storageKeys);
+  console.log('test gathering of _storage keys: ' + JSON.stringify(storageKeys, null, 2))
+  console.log('find the smallest key(index) value: ' + JSON.stringify(smallestIndexValue, null, 2))
+  const minValue = this._storage[smallestIndexValue];
+  return minValue;
 };
 // Time complexity:
 
@@ -78,13 +129,14 @@ Stack.prototype.count = function() {
 /*
 *** Exercises:
 
-1. Implement a stack with a min method which returns the minimum element currently in the stack. This method should have O(1) time complexity. Make sure your implementation handles duplicates.
+1.  Implement a stack with a min method which returns the minimum element currently in the stack.
+    This method should have O(1) time complexity. Make sure your implementation handles duplicates.
 
 2. Sort a stack so that its elements are in ascending order.
 
-3. Given a string, determine if the parenthesis in the string are balanced.
-Ex: balancedParens( 'sqrt(5*(3+8)/(4-2))' ) => true
-Ex: balancedParens( 'Math.min(5,(6-3))(' ) => false
+3.  Given a string, determine if the parenthesis in the string are balanced.
+    Ex: balancedParens( 'sqrt(5*(3+8)/(4-2))' ) => true
+    Ex: balancedParens( 'Math.min(5,(6-3))(' ) => false
 
 4. Towers of Hanoi - https://en.wikipedia.org/wiki/Tower_of_Hanoi
 You are given three towers (stacks) and N disks, each of different size. You can move the disks according to three constraints:
